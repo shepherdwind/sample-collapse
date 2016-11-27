@@ -17,77 +17,29 @@ function random() {
 const Test = React.createClass({
   getInitialState() {
     return {
-      time: random(),
-      accordion: false,
-      activeKey: ['4'],
+      activeKey: [],
     };
   },
 
-  onChange(activeKey) {
-    this.setState({
-      activeKey,
-    });
-  },
-
-  getItems() {
-    const items = [];
-    for (let i = 0, len = 3; i < len; i++) {
-      const key = i + 1;
-      items.push(
-        <Panel header={`This is panel header ${key}`} key={key}>
-          <p>{text.repeat(this.state.time)}</p>
-        </Panel>
-      );
-    }
-    items.push(
-      <Panel header={`This is panel header 4`} key="4">
-        <Collapse defaultActiveKey="1">
-          <Panel header={`This is panel nest panel`} key="1">
-            <p>{text}</p>
-          </Panel>
-        </Collapse>
-      </Panel>
-    );
-
-    return items;
-  },
-
-  setActivityKey() {
-    this.setState({
-      activeKey: '2',
-    });
-  },
-
-  reRender() {
-    this.setState({
-      time: random(),
-    });
-  },
-
-  toggle() {
-    this.setState({
-      accordion: !this.state.accordion,
-    });
+  onAccordionChange(activeKey) {
+    this.setState({ activeKey });
   },
 
   render() {
-    const accordion = this.state.accordion;
-    const btn = accordion ? 'accordion' : 'collapse';
-    const activeKey = this.state.activeKey;
-    return (<div style={{ margin: 20, width: 400 }}>
-      <button onClick={this.reRender}>reRender</button>
-      <button onClick={this.toggle}>{btn}</button>
-      <br/><br/>
-      <button onClick={this.setActivityKey}>active header 2</button>
-      <br/><br/>
+    return (
       <Collapse
-        accordion={accordion}
-        onChange={this.onChange}
-        activeKey={activeKey}
+          onChange={this.onAccordionChange.bind(this)}
+          activeKey={this.state.activeKey}
       >
-        {this.getItems()}
+          <Panel header="about" key={'about'} >about</Panel>
+          <Panel header="gallery" key={'photos'} >this.renderPhotos(gallery)</Panel>
+          <Panel header="video" key={'video'} >this.renderVideo(videos)</Panel>
+          <Panel header="contact" key={'contact'} >contact us</Panel>
+          <Panel header="share" key={'share'} >
+              <a href={`whatsapp://send?text=Take a look at my business card: http://react-js-api.herokuapp.com/111`} className="wa_btn wa_btn_s">Share</a>
+          </Panel>
       </Collapse>
-    </div>);
+    );
   },
 });
 
